@@ -33,7 +33,7 @@ $(MASTERLIB):
 # Compile object files from source
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
-git 
+
 # Clean object files
 clean:
 	rm -f $(OBJ)

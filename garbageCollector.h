@@ -1,40 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   garbageCollector.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/09 00:10:03 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/10 02:50:55 by glevin           ###   ########.fr       */
+/*   Created: 2024/09/10 01:47:13 by glevin            #+#    #+#             */
+/*   Updated: 2024/09/10 02:04:19 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#ifndef GARBAGECOLLECTOR_H
+# define GARGBAGECOLLECOTR_H
+#include <stdlib.h>
 
-# include "masterLib/masterLib.h"
-# include <fcntl.h>
-# include <mlx.h>
-# include <stdlib.h>
-
-typedef struct s_pointData
+typedef struct s_garbageNode
 {
-	int		x;
-	int		y;
-	int		z;
-	int		dx;
-	int		dy;
-}			t_pointData;
+    void *ptr;
+    struct s_garbageNode *next;
+} t_garbageNode;
 
-typedef struct s_mapData
-{
-	int		rows;
-	int		columns;
-	int		vertices;
-
-}			t_mapData;
-
-t_pointData	*parseInput(const char *filename);
+void *gc_malloc(size_t size);
+void gc_free_all(void);
 
 #endif
