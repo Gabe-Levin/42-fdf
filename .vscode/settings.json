@@ -3,6 +3,8 @@
         "ft_printf.h": "c",
         "main.h": "c",
         "stdio.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "main.c": "cpp",
+        "cmath": "cpp"
     }
 }

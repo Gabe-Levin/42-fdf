@@ -18,8 +18,8 @@ FT_PRINTF_SRC = $(FT_PRINTF_DIR)/ft_printf.c \
                 $(FT_PRINTF_DIR)/ft_strlen.c
 
 # Source files for get_next_line project
-GNL_SRC = $(GNL_DIR)/get_next_line_bonus.c \
-          $(GNL_DIR)/get_next_line_utils_bonus.c
+GNL_SRC = $(GNL_DIR)/get_next_line.c \
+          $(GNL_DIR)/get_next_line_utils.c
 
 # Source files for libft project
 LIBFT_SRC = $(LIBFT_DIR)/ft_atoi.c \

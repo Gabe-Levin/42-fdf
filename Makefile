@@ -3,7 +3,7 @@ NAME = fdf
 
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 MLXFLAGS = -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 
 # Directories
@@ -14,7 +14,7 @@ MASTERLIB_DIR = masterLib
 MASTERLIB = $(MASTERLIB_DIR)/masterLib.a
 
 # Source files and object files
-SRC = main.c
+SRC = main.c parseInput.c windowFunctions.c draw.c
 OBJ = $(SRC:.c=.o)
 
 # Build the project

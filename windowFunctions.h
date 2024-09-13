@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   masterLib.h                                        :+:      :+:    :+:   */
+/*   windowFunctions.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/09 02:25:03 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/12 15:43:35 by glevin           ###   ########.fr       */
+/*   Created: 2024/09/12 23:19:01 by glevin            #+#    #+#             */
+/*   Updated: 2024/09/12 23:31:22 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MASTERLIB_H
-#define MASTERLIB_H
+#ifndef WINDOWFUNCTIONS_H
+# define WINDOWFUNCTIONS_H
 
-// Include all necessary headers from the library
-#include "libft/libft.h"
-#include "ft_printf/ft_printf.h"
-#include "get_next_line/get_next_line.h"
+# include "main.c"
+
+int		close_window(t_mlxData *img);
+int		key_hook(int keycode, t_mlxData *img);
+void	initializeWindow(t_mlxData *img);
 
 #endif

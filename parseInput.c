@@ -6,39 +6,14 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:08:45 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/10 03:22:23 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/13 02:48:16 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include <main.h>
+#include "main.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>
-
-#define BUFFER_SIZE 1024
-
-#define MAX_ROWS 11
-#define MAX_COLS 19
-
-typedef struct s_pointData
-{
-	int		x;
-	int		y;
-	int		z;
-	int		dx;
-	int		dy;
-}			t_pointData;
-
-typedef struct s_mapData
-{
-	int		rows;
-	int		columns;
-	int		vertices;
-
-}			t_mapData;
-
-#include <stdio.h>
-#include <stdlib.h>
 
 char	*readInput(const char *filename)
 {
@@ -46,7 +21,7 @@ char	*readInput(const char *filename)
 	int		fd;
 	int		byte_cnt;
 
-	buffer = (char *)malloc(BUFFER_SIZE);
+	buffer = (char *)malloc(BUFFER_SIZE2);
 	if (!buffer)
 		return (NULL);
 	fd = open(filename, O_RDONLY);
@@ -55,7 +30,7 @@ char	*readInput(const char *filename)
 		free(buffer);
 		return (NULL);
 	}
-	byte_cnt = read(fd, buffer, BUFFER_SIZE);
+	byte_cnt = read(fd, buffer, BUFFER_SIZE2);
 	if (byte_cnt == -1)
 	{
 		free(buffer);
@@ -66,50 +41,54 @@ char	*readInput(const char *filename)
 	return (buffer);
 }
 
-t_pointData	*parseStr(char *s, t_mapData *mapData)
+t_pointData	*parseStr(char *s, t_pointData *pData, t_mapData *mapData)
 {
-	int			i;
-	int			row;
-	int			column;
-	t_pointData	points[mapData->vertices];
+	int		i;
+	int		pid;
+	int		row;
+	int		column;
+	double	angle;
 
 	i = 0;
+	pid = 0;
 	row = 0;
 	column = 0;
-	printf("HERE");
+	angle = 0.5236; // 30 degrees in radians
 	while (s[i])
 	{
-		if (s[i] == '0')
+		printf("x_offset: %d\n", mapData->x_offset);
+		printf("y_offset: %d\n", mapData->y_offset);
+		if (s[i] != ' ' && s[i] != '\n')
 		{
-			points[i].x = column;
-			points[i].y = row;
-			points[i].z = 0;
+			pData[pid].x = mapData->x_offset + column * mapData->zoom_lvl;
+			pData[pid].y = mapData->y_offset + row * mapData->zoom_lvl;
+			if (s[i] != '0' && s[i + 1] != ' ' && s[i + 1] != '\0')
+			{
+				pData[pid].z = ft_atoi(ft_substr(s, i, 2));
+				i++;
+			}
+			else
+				pData[pid].z = s[i] - '0';
+			pData[pid].dx = pData[pid].x * cos(angle) - pData[pid].y
+				* cos(angle);
+			pData[pid].dy = pData[pid].x * sin(angle) + pData[pid].y
+				* sin(angle) - pData[pid].z;
 			column++;
-			printf("column: %d \nrow: %d\nheight:%d\n", points[i].x,
-				points[i].y, points[i].z);
-			printf("----------\n");
-		}
-		else if (s[i] == '1')
-		{
-			points[i].x = column;
-			points[i].y = row;
-			points[i].z = 10;
-			column++;
-			i++;
-			printf("column: %d \nrow: %d\nheight:%d\n", points[i].x,
-				points[i].y, points[i].z);
-			printf("----------\n");
+			// printf("PID: %d\n", pid);
+			// printf("Column: %d \nrow: %d\nheight:%d\n", pData[pid].x,
+			// 	pData[pid].y, pData[pid].z);
+			// // printf("dx: %d \ndy: %d\n", pData[pid].dx, pData[pid].dy);
+			// printf("----------\n");
+			pid++;
 		}
 		else if (s[i] == '\n')
 		{
 			row++;
 			column = 0;
-			printf("%s", "\n");
 		}
 		i++;
 	}
-	// printf("%s", s);
-	return (points);
+	return (pData);
 }
 
 void	getMapData(char *s, t_mapData *mapData)
@@ -117,17 +96,13 @@ void	getMapData(char *s, t_mapData *mapData)
 	int	i;
 
 	i = 0;
-	mapData->vertices = 0;
-	mapData->rows = 0;
 	while (s[i])
 	{
-		// printf("%c", s[i]);
-		if (s[i] == '0')
-			mapData->vertices++;
-		if (s[i] == '1')
+		if (s[i] != ' ' && s[i] != '\n')
 		{
 			mapData->vertices++;
-			i++;
+			if (s[i + 1] && (s[i + 1] != ' ' || s[i + 1] != '\n'))
+				i++;
 		}
 		if (s[i] == '\n')
 			mapData->rows++;
@@ -136,25 +111,19 @@ void	getMapData(char *s, t_mapData *mapData)
 	mapData->columns = mapData->vertices / mapData->rows;
 }
 
-t_pointData	*parseInput(const char *filename)
+t_pointData	*parseInput(const char *filename, t_mapData *mapData)
 {
 	t_pointData	*pData;
-	t_mapData	*mapData;
 	char		*inputStr;
-	int			rows;
-	int			columns;
-	int			vertices;
 
 	inputStr = readInput(filename);
 	getMapData(inputStr, mapData);
-	// printf("row = %d, columns = %d, vertices = %d", mapData->rows,
-	// 	mapData->columns, mapData->vertices);
-	pData = parseStr(inputStr, mapData);
+	pData = (t_pointData *)malloc(mapData->vertices * (sizeof(t_pointData)));
+	if (!pData)
+	{
+		free(inputStr);
+		return (NULL);
+	}
+	pData = parseStr(inputStr, pData, mapData);
 	return (pData);
-}
-
-int	main(void)
-{
-	parseInput("./maps/42.fdf");
-	return (0);
 }

@@ -6,61 +6,62 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 22:34:51 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/09 22:28:21 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/13 02:49:23 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-void draw_square(char *img_data, int img_width, int square_size, int start_x, int start_y, int color)
+void	init_mapData(t_mapData *mapData)
 {
-    int bits_per_pixel = 32;
-    int bytes_per_pixel = bits_per_pixel / 8;
-    int line_length = img_width * bytes_per_pixel;
-
-    for (int y = 0; y < square_size; y++)
-    {
-        for (int x = 0; x < square_size; x++)
-        {
-            int pixel = (y + start_y) * line_length + (x + start_x) * bytes_per_pixel;
-            *(unsigned int *)(img_data + pixel) = color;
-        }
-    }
+	mapData->vertices = 0;
+	mapData->rows = 0;
+	mapData->zoom_lvl = 15;
+	mapData->x_offset = 400;
+	mapData->y_offset = 0;
 }
-#include <stdio.h>
-int	main(void)
+
+// t_pointData	*update_points(t_pointData *pData, t_mapData *mapData)
+// {
+// 	int	i;
+// 	int row;
+// 	int column;
+
+// 	i = 0;
+// 	row = 0;
+// 	column = 0;
+// 	while (i < mapData->vertices)
+// 	{
+// 		if((i+1) % mapData->
+// 		pData[i].x = mapData->x_offset + column * mapData->zoom_lvl;
+// 		pData[i].y = mapData->y_offset + row * mapData->zoom_lvl;
+// 		i++;
+// 	}
+// 	return (pData);
+// }
+
+// void	redraw(t_mlxData *img, t_pointData *pData, t_mapData *mapData)
+// {
+// 	pData = update_points(pData, mapData);
+// 	render_points_to_image(pData, img, mapData->vertices);
+// 	render_lines_to_image(pData, img, mapData);
+// 	mlx_put_image_to_window(img.mlx, img.win, img.img, 0, 0);
+// }
+
+int	main(int argc, char **argv)
 {
-	void *mlx;
-	void *win;
-	void *img;
-	char *img_data;
-	int bits_per_pixel;
-	int line_length;
-	int endian;
+	t_mlxData	img;
+	t_pointData	*pData;
+	t_mapData	mapData;
 
-	mlx = mlx_init();
-	if (!mlx)
+	if (argc != 2)
 		return (1);
-
-	win = mlx_new_window(mlx, 800, 600, "FDF Test");
-	if (!win)
-	{
-		free(mlx);
-		return (1);
-	}
-
-	img = mlx_new_image(mlx, 800, 600);
-	img_data = mlx_get_data_addr(img, &bits_per_pixel, &line_length, &endian);
-
-    // Draw a 50x50 red square starting at (100, 100)
-    draw_square(img_data, 800, 50, 100, 100, 0x00FF0000);
-
-    // Draw another 50x50 blue square starting at (300, 200)
-    draw_square(img_data, 800, 50, 300, 200, 0x0000FF00);
-    
-	mlx_put_image_to_window(mlx, win, img, 0, 0);
-
-	mlx_loop(mlx);
-
+	init_window(&img, &mapData);
+	init_mapData(&mapData);
+	pData = parseInput(argv[1], &mapData);
+	render_points_to_image(pData, &img, mapData.vertices);
+	render_lines_to_image(pData, &img, mapData);
+	mlx_put_image_to_window(img.mlx, img.win, img.img, 0, 0);
+	mlx_loop(img.mlx);
 	return (0);
 }
