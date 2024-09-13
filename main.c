@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 22:34:51 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/13 16:54:48 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/14 00:56:43 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	init_mapData(t_mapData *mapData, char *filename)
 {
-	mapData->zoom_lvl = 15;
+	mapData->zoom_lvl = 3;
 	mapData->x_offset = 300;
 	mapData->y_offset = 0;
 	get_map_data(mapData, filename);
@@ -31,7 +31,6 @@ void	init_mapData(t_mapData *mapData, char *filename)
 // 	column = 0;
 // 	while (i < mapData->vertices)
 // 	{
-// 		if((i+1) % mapData->
 // 		pData[i].x = mapData->x_offset + column * mapData->zoom_lvl;
 // 		pData[i].y = mapData->y_offset + row * mapData->zoom_lvl;
 // 		i++;
@@ -39,13 +38,14 @@ void	init_mapData(t_mapData *mapData, char *filename)
 // 	return (pData);
 // }
 
-// void	redraw(t_mlxData *img, t_pointData *pData, t_mapData *mapData)
-// {
-// 	pData = update_points(pData, mapData);
-// 	render_points_to_image(pData, img, mapData->vertices);
-// 	render_lines_to_image(pData, img, mapData);
-// 	mlx_put_image_to_window(img.mlx, img.win, img.img, 0, 0);
-// }
+void	redraw(t_mlxData *img, t_pointData *pData, t_mapData mapData)
+{
+	mlx_clear_window(img->mlx, img->win);
+	// pData = update_points(pData, mapData);
+	render_points_to_image(pData, img, mapData.vertices);
+	render_lines_to_image(pData, img, mapData);
+	mlx_put_image_to_window(img->mlx, img->win, img->img, 0, 0);
+}
 
 int	main(int argc, char **argv)
 {
@@ -58,7 +58,7 @@ int	main(int argc, char **argv)
 	ft_memset(&mapData, 0, sizeof(t_mapData));
 	init_window(&img, &mapData);
 	init_mapData(&mapData, argv[1]);
-	pData = parseInput(argv[1], &mapData);
+	pData = parse_input(argv[1], &mapData);
 	render_points_to_image(pData, &img, mapData.vertices);
 	render_lines_to_image(pData, &img, mapData);
 	mlx_put_image_to_window(img.mlx, img.win, img.img, 0, 0);

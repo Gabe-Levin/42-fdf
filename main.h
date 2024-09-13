@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:10:03 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/13 15:53:15 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/14 00:41:04 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,13 @@ typedef struct s_mlxData
 	int		width;
 }			t_mlxData;
 
-t_pointData	*parseInput(const char *filename, t_mapData *mapData);
+typedef struct s_parse_vars
+{
+	int		pid;
+	int		row;
+}			t_parse_vars;
+
+t_pointData	*parse_input(const char *filename, t_mapData *mapData);
 int			close_window(t_mlxData *img);
 int			key_hook(int keycode, t_mlxData *img);
 void		init_window(t_mlxData *img, t_mapData *mapData);
