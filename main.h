@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:10:03 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/13 02:39:17 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/13 15:53:15 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_pointData
 	int		dx;
 	int		dy;
 	int		color;
-	int 	row;
+	int		row;
 	int		column;
 }			t_pointData;
 
@@ -66,5 +66,6 @@ void		render_points_to_image(t_pointData *pData, t_mlxData *img,
 void		bresenham(t_mlxData *img, t_pointData p1, t_pointData p2);
 void		render_lines_to_image(t_pointData *pData, t_mlxData *img,
 				t_mapData mapData);
+void		get_map_data(t_mapData *mapData, const char *filename);
 
 #endif

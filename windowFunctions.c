@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 23:18:44 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/13 01:56:49 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/13 16:54:38 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	init_window(t_mlxData *img, t_mapData *mapData)
 	img->img = mlx_new_image(img->mlx, 800, 600);
 	mlx_hook(img->win, 17, 0, close_window, &img);
 	mlx_key_hook(img->win, key_hook_close, &img);
-	mlx_key_hook(img->win, key_hook_offset, &img);
 	printf("x_offset: %d\n", mapData->x_offset);
 	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel,
 			&img->line_length, &img->endian);

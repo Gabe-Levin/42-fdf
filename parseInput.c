@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:08:45 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/13 02:48:16 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/13 16:55:14 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,27 @@ char	*readInput(const char *filename)
 	return (buffer);
 }
 
+// char	*readInput(const char *filename, t_mapData *mapData)
+// {
+// 	int		fd;
+// 	char	*nline;
+// 	int		i;
+
+// 	i = 0;
+// 	fd = open(filename, O_RDONLY);
+// 	nline = get_next_line(fd);
+// 	mapData->columns = ft_strlen(nline);
+// 	printf("%s", nline);
+// 	while (ft_strlen(nline) > 1)
+// 	{
+// 	}
+// 	return (nline);
+// }
+
+// t_pointData	**parseStr(void)
+// {
+// }
+
 t_pointData	*parseStr(char *s, t_pointData *pData, t_mapData *mapData)
 {
 	int		i;
@@ -56,8 +77,6 @@ t_pointData	*parseStr(char *s, t_pointData *pData, t_mapData *mapData)
 	angle = 0.5236; // 30 degrees in radians
 	while (s[i])
 	{
-		printf("x_offset: %d\n", mapData->x_offset);
-		printf("y_offset: %d\n", mapData->y_offset);
 		if (s[i] != ' ' && s[i] != '\n')
 		{
 			pData[pid].x = mapData->x_offset + column * mapData->zoom_lvl;
@@ -75,9 +94,9 @@ t_pointData	*parseStr(char *s, t_pointData *pData, t_mapData *mapData)
 				* sin(angle) - pData[pid].z;
 			column++;
 			// printf("PID: %d\n", pid);
-			// printf("Column: %d \nrow: %d\nheight:%d\n", pData[pid].x,
-			// 	pData[pid].y, pData[pid].z);
-			// // printf("dx: %d \ndy: %d\n", pData[pid].dx, pData[pid].dy);
+			// printf("x: %d \ny: %d\nz:%d\n", pData[pid].x, pData[pid].y,
+			// 	pData[pid].z);
+			// printf("dx: %d \ndy: %d\n", pData[pid].dx, pData[pid].dy);
 			// printf("----------\n");
 			pid++;
 		}
@@ -91,24 +110,34 @@ t_pointData	*parseStr(char *s, t_pointData *pData, t_mapData *mapData)
 	return (pData);
 }
 
-void	getMapData(char *s, t_mapData *mapData)
+void	get_map_data(t_mapData *mapData, const char *filename)
 {
-	int	i;
+	int		i;
+	int		fd;
+	char	*l;
 
-	i = 0;
-	while (s[i])
+	fd = open(filename, O_RDONLY);
+	l = get_next_line(fd);
+	// printf("x_offset: %d\n", mapData->x_offset);
+	while (l != NULL)
 	{
-		if (s[i] != ' ' && s[i] != '\n')
+		i = 0;
+		while (l[i])
 		{
-			mapData->vertices++;
-			if (s[i + 1] && (s[i + 1] != ' ' || s[i + 1] != '\n'))
-				i++;
+			if (l[i] != ' ' && l[i] != '\n')
+			{
+				mapData->vertices++;
+				if (l[i + 1] && (l[i + 1] != ' ' || l[i + 1] != '\n'))
+					i++;
+			}
+			if (l[i] == '\n')
+				mapData->rows++;
+			i++;
 		}
-		if (s[i] == '\n')
-			mapData->rows++;
-		i++;
+		l = get_next_line(fd);
 	}
 	mapData->columns = mapData->vertices / mapData->rows;
+	close(fd);
 }
 
 t_pointData	*parseInput(const char *filename, t_mapData *mapData)
@@ -117,7 +146,6 @@ t_pointData	*parseInput(const char *filename, t_mapData *mapData)
 	char		*inputStr;
 
 	inputStr = readInput(filename);
-	getMapData(inputStr, mapData);
 	pData = (t_pointData *)malloc(mapData->vertices * (sizeof(t_pointData)));
 	if (!pData)
 	{
@@ -125,5 +153,6 @@ t_pointData	*parseInput(const char *filename, t_mapData *mapData)
 		return (NULL);
 	}
 	pData = parseStr(inputStr, pData, mapData);
+	fflush(stdout);
 	return (pData);
 }

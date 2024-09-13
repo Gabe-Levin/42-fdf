@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:29:54 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/12 15:42:41 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/13 15:35:16 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ int	ft_istrchr(const char *str, int c)
 The	function takes a string as an argument and returns its length.
 The returned value is of type size_t (an unsigned integer type).
 */
-size_t	ft_strlen(const char *str)
-{
-	size_t	size;
+// size_t	ft_strlen(const char *str)
+// {
+// 	size_t	size;
 
-	size = 0;
-	while (str[size])
-	{
-		size++;
-	}
-	return (size);
-}
+// 	size = 0;
+// 	while (str[size])
+// 	{
+// 		size++;
+// 	}
+// 	return (size);
+// }
 
 /*
 The function strdup() duplicates a string. It returns a pointer to

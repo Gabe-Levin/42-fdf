@@ -6,19 +6,18 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 22:34:51 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/13 02:49:23 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/13 16:54:48 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-void	init_mapData(t_mapData *mapData)
+void	init_mapData(t_mapData *mapData, char *filename)
 {
-	mapData->vertices = 0;
-	mapData->rows = 0;
 	mapData->zoom_lvl = 15;
-	mapData->x_offset = 400;
+	mapData->x_offset = 300;
 	mapData->y_offset = 0;
+	get_map_data(mapData, filename);
 }
 
 // t_pointData	*update_points(t_pointData *pData, t_mapData *mapData)
@@ -56,8 +55,9 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (1);
+	ft_memset(&mapData, 0, sizeof(t_mapData));
 	init_window(&img, &mapData);
-	init_mapData(&mapData);
+	init_mapData(&mapData, argv[1]);
 	pData = parseInput(argv[1], &mapData);
 	render_points_to_image(pData, &img, mapData.vertices);
 	render_lines_to_image(pData, &img, mapData);
