@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 01:15:40 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/14 00:27:53 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/14 22:25:12 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,14 @@ void	put_pixel_to_image(t_mlxData *img, int x, int y, int color)
 	// Alpha channel (fully opaque)
 }
 
-void	render_points_to_image(t_pointData *pData, t_mlxData *img,
+void	draw_points(t_pointData *pData, t_mlxData *img,
 		int numVertices)
 {
 	int	i;
 	int	color;
 
 	i = 0;
+	printf("draw_points: %d\n",pData[1].dx);
 	while (i < numVertices)
 	{
 		if (pData[i].z == 0)
@@ -95,19 +96,19 @@ void	bresenham(t_mlxData *img, t_pointData p1, t_pointData p2)
 	}
 }
 
-void	render_lines_to_image(t_pointData *pData, t_mlxData *img,
-		t_mapData mapData)
+void	draw_lines(t_pointData *pData, t_mlxData *img,
+		t_mapData *mapData)
 {
 	int	i;
 
 	i = 0;
-	while (i < mapData.vertices)
+	while (i < mapData->vertices)
 	{
-		if ((i + 1) % mapData.columns || i == 0)
+		if ((i + 1) % mapData->columns || i == 0)
 			bresenham(img, pData[i], pData[i + 1]);
-		if (i < (mapData.vertices - mapData.columns))
+		if (i < (mapData->vertices - mapData->columns))
 		{
-			bresenham(img, pData[i], pData[i + mapData.columns]);
+			bresenham(img, pData[i], pData[i + mapData->columns]);
 		}
 		i++;
 	}
