@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 01:15:40 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/14 22:25:12 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/15 00:22:01 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	put_pixel_to_image(t_mlxData *img, int x, int y, int color)
 {
 	int	pixel_index;
 
-	if (x < 0 || y < 0 || x >= img->width || y >= 600)
+	if (x < 0 || y < 0 || x >= img->win_width || y >= 600)
 		return ;
 	pixel_index = (y * img->line_length + x * (img->bits_per_pixel / 8));
 	// Set the pixel color (assuming endian is handled elsewhere)
@@ -34,7 +34,7 @@ void	draw_points(t_pointData *pData, t_mlxData *img,
 	int	color;
 
 	i = 0;
-	printf("draw_points: %d\n",pData[1].dx);
+	
 	while (i < numVertices)
 	{
 		if (pData[i].z == 0)

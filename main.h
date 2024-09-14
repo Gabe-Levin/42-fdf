@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:10:03 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/14 22:43:55 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/15 00:03:14 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ typedef struct s_mlxData
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
-	int			width;
+	int			win_width;
+	int			win_height;
 }				t_mlxData;
 
 typedef struct s_parse_vars
@@ -73,6 +74,8 @@ typedef struct s_hook_vars
 
 t_pointData		*init_points(const char *filename, t_mapData *mapData);
 int				close_window(t_mlxData *img);
+void			read_input(const char *filename, t_pointData *pData,
+					t_mapData *mapData);
 int				key_hooks(int keycode, t_hook_vars *hook_vars);
 t_mlxData		*init_image(void);
 void			put_pixel_to_image(t_mlxData *img, int x, int y, int color);
@@ -85,5 +88,6 @@ void			get_map_data(t_mapData **mapData, const char *filename);
 void			init_hooks(t_mlxData *img, t_mapData *mapData,
 					t_pointData *pdata);
 void			redraw(t_mlxData *img, t_pointData *pData, t_mapData *mapData);
+void			update_all_points(t_pointData *pData, t_mapData *mapData);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:08:45 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/14 23:15:42 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/15 00:45:02 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,68 +18,39 @@
 void	update_point(char *s, t_parse_vars vars, t_pointData *pData,
 		t_mapData *mapData)
 {
-	pData[vars.pid].x = mapData->x_offset + vars.col * mapData->zoom_lvl;
-	pData[vars.pid].y = mapData->y_offset + vars.row * mapData->zoom_lvl;
+	pData[vars.pid].x = vars.col * mapData->zoom_lvl;
+	pData[vars.pid].y = vars.row * mapData->zoom_lvl;
 	pData[vars.pid].z = ft_atoi(s);
-	pData[vars.pid].dx = pData[vars.pid].x * cos(mapData->angle)
-		- pData[vars.pid].y * cos(mapData->angle);
-	pData[vars.pid].dy = pData[vars.pid].x * sin(mapData->angle)
-		+ pData[vars.pid].y * sin(mapData->angle) - pData[vars.pid].z;
+	pData[vars.pid].dx = (pData[vars.pid].x * cos(mapData->angle)
+		- pData[vars.pid].y * cos(mapData->angle))+mapData->x_offset ;
+	pData[vars.pid].dy = (pData[vars.pid].x * sin(mapData->angle)
+		+ pData[vars.pid].y * sin(mapData->angle) - pData[vars.pid].z)+mapData->y_offset;
 	// printf("vars.PID: %d\n", vars.pid);
-	// printf("x: %d \ny: %d\nz:%d\n", pData[vars.pid].x,
-	// 	pData[vars.pid].y, pData[vars.pid].z);
-	// printf("dx: %d \ndy: %d\n", pData[vars.pid].dx,
-	// pData[vars.pid].dy);
+	// printf("x: %d \ny: %d\nz:%d\n", pData[vars.pid].x, pData[vars.pid].y,
+	// 	pData[vars.pid].z);
+	// printf("dx: %d \ndy: %d\n", pData[vars.pid].dx, pData[vars.pid].dy);
+	// printf("angle: %f \n", mapData->angle);
 	// printf("----------\n");
 }
 
-int	parseStr(char *s, t_parse_vars vars, t_pointData *pData, t_mapData *mapData)
+void	update_all_points(t_pointData *pData, t_mapData *mapData)
 {
 	int	i;
-	int	row;
-	int	column;
 
 	i = 0;
-	row = 0;
-	column = 0;
-	while (s[i])
+	while (i < mapData->vertices)
 	{
-		if (s[i] != ' ' && s[i] != '\n')
-		{
-			// printf("%c\n", s[i]);
-			// printf("x_offset: %d \ncolumn: %d\nzoom_lvl:%d\n",
-			// 	mapData->x_offset, column, mapData->zoom_lvl);
-			pData[vars.pid].x = mapData->x_offset + column * mapData->zoom_lvl;
-			pData[vars.pid].y = mapData->y_offset + vars.row
-				* mapData->zoom_lvl;
-			if (s[i] != '0' && s[i + 1] != ' ' && s[i + 1] != '\0')
-			{
-				pData[vars.pid].z = ft_atoi(ft_substr(s, i, 2));
-				i++;
-			}
-			else
-				pData[vars.pid].z = s[i] - '0';
-			pData[vars.pid].dx = pData[vars.pid].x * cos(mapData->angle)
-				- pData[vars.pid].y * cos(mapData->angle);
-			pData[vars.pid].dy = pData[vars.pid].x * sin(mapData->angle)
-				+ pData[vars.pid].y * sin(mapData->angle) - pData[vars.pid].z;
-			column++;
-			// printf("vars.PID: %d\n", vars.pid);
-			// printf("x: %d \ny: %d\nz:%d\n", pData[vars.pid].x,
-			// 	pData[vars.pid].y, pData[vars.pid].z);
-			// printf("dx: %d \ndy: %d\n", pData[vars.pid].dx,
-			// pData[vars.pid].dy);
-			// printf("----------\n");
-			vars.pid++;
-		}
-		else if (s[i] == '\n')
-		{
-			row++;
-			column = 0;
-		}
+		// printf("BEFORE: \n x: %i\n y: %i\n dx: %i\n dy: %i\n --------\n",
+		// 	pData[i].x, pData[i].y, pData[i].dx, pData[i].dy);
+		pData[i].dx = (pData[i].x * cos(mapData->angle) - pData[i].y
+				* cos(mapData->angle)) + mapData->x_offset;
+		pData[i].dy = (pData[i].x * sin(mapData->angle) + pData[i].y
+				* sin(mapData->angle) - pData[i].z) + mapData->y_offset;
+		// printf("AFTER: \n x: %i\n y: %i\ndx: %i\n dy: %i\n--------\n",
+		// 	pData[i].x, pData[i].y, pData[i].dx, pData[i].dy);
 		i++;
 	}
-	return (vars.pid);
+	return ;
 }
 
 void	read_input(const char *filename, t_pointData *pData, t_mapData *mapData)
@@ -91,15 +62,18 @@ void	read_input(const char *filename, t_pointData *pData, t_mapData *mapData)
 
 	vars.pid = 0;
 	vars.row = 0;
-	vars.col = 0;
 	fd = open(filename, O_RDONLY);
 	l = get_next_line(fd);
 	while (l != NULL)
-	// while (vars.pid == 0)
 	{
 		str = ft_split(l, ' ');
-		printf("%s", str[0]);
-		vars.pid = parseStr(l, vars, pData, mapData);
+		vars.col = 0;
+		while (str[vars.col])
+		{
+			update_point(str[vars.col], vars, pData, mapData);
+			vars.col++;
+			vars.pid++;
+		}
 		l = get_next_line(fd);
 		vars.row++;
 	}

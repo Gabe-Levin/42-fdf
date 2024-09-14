@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 23:18:44 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/14 22:04:43 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/15 00:45:46 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,16 @@ int	close_window(t_mlxData *img)
 
 int	key_hooks(int keycode, t_hook_vars *hook_vars)
 {
-	// if (keycode == KEY_ESC)
-	// {
-	// 	close_window(hook_vars->mlxData->img);
-	// 	exit(0);
-	// }
-	// Check if hook_vars is NULL
-	if (hook_vars == NULL)
+	if (keycode == KEY_ESC)
 	{
-		printf("Error: hook_vars is NULL\n");
-		fflush(stdout);
-		return (1); // Return non-zero error code
+		close_window(hook_vars->mlxData->img);
+		exit(0);
 	}
-	// Check if mapData is NULL within hook_vars
-	if (hook_vars->mapData == NULL)
-	{
-		printf("Error: mapData is NULL\n");
-		fflush(stdout);
-		return (1); // Return non-zero error code
-	}
+
 	if (keycode == KEY_UP)
 	{
-		printf("zoom_lvl: %d\n", hook_vars->mapData->zoom_lvl);
-		fflush(stdout);
+		// mlx_clear_window(hook_vars->mlxData->mlx, hook_vars->mlxData->win);
+		hook_vars->mapData->y_offset++;
 		redraw(hook_vars->mlxData, hook_vars->pData, hook_vars->mapData);
 		return (0);
 	}
@@ -99,15 +86,17 @@ t_mlxData	*init_image(void)
 	img->mlx = mlx_init();
 	if (!img->mlx)
 		return (NULL);
-	img->win = mlx_new_window(img->mlx, 800, 600, "FDF Test");
+	img->win_height = 600;
+	img->win_width = 800;
+	img->win = mlx_new_window(img->mlx, img->win_width, img->win_height,
+			"FDF Test");
 	if (!img->win)
 	{
 		free(img->mlx);
 		return (NULL);
 	}
-	img->img = mlx_new_image(img->mlx, 800, 600);
+	img->img = mlx_new_image(img->mlx, img->win_width, img->win_height);
 	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel,
 			&img->line_length, &img->endian);
-	img->width = 800;
 	return (img);
 }
