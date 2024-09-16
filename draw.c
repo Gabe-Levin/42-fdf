@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 01:15:40 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/15 00:22:01 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/16 00:58:05 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,35 +27,35 @@ void	put_pixel_to_image(t_mlxData *img, int x, int y, int color)
 	// Alpha channel (fully opaque)
 }
 
-void	draw_points(t_pointData *pData, t_mlxData *img,
-		int numVertices)
+void	draw_points(t_pointData *pData, t_mlxData *img, int numVertices)
 {
 	int	i;
-	int	color;
 
 	i = 0;
-	
 	while (i < numVertices)
 	{
-		if (pData[i].z == 0)
-			color = 0x00FFFFFF; // white
-		else
-			color = 0x00FF0000; // red
-		put_pixel_to_image(img, pData[i].dx, pData[i].dy, color);
+		if (!pData[i].color)
+		{
+			if (pData[i].z == 0)
+				pData[i].color = 0x00FFFFFF; // white
+			else
+				pData[i].color = 0x00FF0000; // red
+		}
+		put_pixel_to_image(img, pData[i].dx, pData[i].dy, pData[i].color);
 		i++;
 	}
 }
 
 void	bresenham(t_mlxData *img, t_pointData p1, t_pointData p2)
 {
-	int		x;
-	int		y;
-	int		dx;
-	int		dy;
-	int		sx;
-	int		sy;
-	int		err;
-	int		e2;
+	int	x;
+	int	y;
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	err;
+	int	e2;
 
 	x = p1.dx;
 	y = p1.dy;
@@ -81,7 +81,7 @@ void	bresenham(t_mlxData *img, t_pointData p1, t_pointData p2)
 		err = -dy / 2;
 	while (x != p2.dx || y != p2.dy)
 	{
-		put_pixel_to_image(img, x, y, 0x00FF0000);
+		put_pixel_to_image(img, x, y, p1.color);
 		e2 = 2 * err;
 		if (e2 > -dx)
 		{
@@ -96,8 +96,7 @@ void	bresenham(t_mlxData *img, t_pointData p1, t_pointData p2)
 	}
 }
 
-void	draw_lines(t_pointData *pData, t_mlxData *img,
-		t_mapData *mapData)
+void	draw_lines(t_pointData *pData, t_mlxData *img, t_mapData *mapData)
 {
 	int	i;
 

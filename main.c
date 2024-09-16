@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 22:34:51 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/15 00:36:29 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/16 03:36:35 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ t_mapData	*init_mapData(char *filename)
 	if (mapData == NULL)
 		return (NULL);
 	ft_memset(mapData, 0, sizeof(t_mapData));
-	mapData->zoom_lvl = 10;
-	mapData->x_offset = 300;
-	mapData->y_offset = 300;
-	mapData->angle = 0.5236;
+	mapData->zoom_lvl = 1;
+	mapData->x_offset = 525; // 525;
+	mapData->y_offset = 175; // 225;
+	mapData->angle = 30;
 	get_map_data(&mapData, filename);
 	return (mapData);
 }
@@ -36,10 +36,21 @@ void	redraw(t_mlxData *mlxData, t_pointData *pData, t_mapData *mapData)
 	mlxData->img = mlx_new_image(mlxData->mlx, mlxData->win_width,
 			mlxData->win_height);
 	update_all_points(pData, mapData);
-	// read_input("./maps/42.fdf", pData, mapData);
 	draw_points(pData, mlxData, mapData->vertices);
 	draw_lines(pData, mlxData, mapData);
 	mlx_put_image_to_window(mlxData->mlx, mlxData->win, mlxData->img, 0, 0);
+}
+
+void	center_points(t_pointData *pData, t_mapData *mapData)
+{
+	int	default_zoom;
+
+	default_zoom = (int)(300 / (pData[mapData->vertices - 1].dy - pData[0].dy));
+	if (default_zoom == 0)
+		mapData->zoom_lvl = 1;
+	else
+		mapData->zoom_lvl = default_zoom;
+	update_all_points(pData, mapData);
 }
 
 int	main(int argc, char **argv)
@@ -53,6 +64,7 @@ int	main(int argc, char **argv)
 	img = init_image();
 	mapData = init_mapData(argv[1]);
 	pData = init_points(argv[1], mapData);
+	center_points(pData, mapData);
 	init_hooks(img, mapData, pData);
 	draw_points(pData, img, mapData->vertices);
 	draw_lines(pData, img, mapData);

@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 23:18:44 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/15 00:45:46 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/16 03:02:14 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #define KEY_DOWN 65364
 #define KEY_LEFT 65361
 #define KEY_RIGHT 65363
+#define KEY_E 101
+#define KEY_Q 113
 
 int	close_window(t_mlxData *img)
 {
@@ -28,31 +30,31 @@ int	close_window(t_mlxData *img)
 
 int	key_hooks(int keycode, t_hook_vars *hook_vars)
 {
+	printf("Keycode: %d\n", keycode);
+	fflush(stdout);
 	if (keycode == KEY_ESC)
 	{
 		close_window(hook_vars->mlxData->img);
 		exit(0);
 	}
-
-	if (keycode == KEY_UP)
-	{
-		// mlx_clear_window(hook_vars->mlxData->mlx, hook_vars->mlxData->win);
-		hook_vars->mapData->y_offset++;
-		redraw(hook_vars->mlxData, hook_vars->pData, hook_vars->mapData);
-		return (0);
-	}
-	// if (keycode == KEY_DOWN)
-	// {
-	// 	return (0);
-	// }
-	// if (keycode == KEY_LEFT)
-	// {
-	// 	return (0);
-	// }
-	// if (keycode == KEY_RIGHT)
-	// {
-	// 	return (0);
-	// }
+	if (keycode == KEY_UP || keycode == 119)
+		hook_vars->mapData->y_offset = hook_vars->mapData->y_offset - 5;
+	if (keycode == KEY_DOWN || keycode == 115)
+		hook_vars->mapData->y_offset = hook_vars->mapData->y_offset + 5;
+	if (keycode == KEY_LEFT || keycode == 97)
+		hook_vars->mapData->x_offset = hook_vars->mapData->x_offset - 5;
+	if (keycode == KEY_RIGHT || keycode == 100)
+		hook_vars->mapData->x_offset = hook_vars->mapData->x_offset + 5;
+	if (keycode == KEY_E)
+		hook_vars->mapData->angle = hook_vars->mapData->angle + 5;
+	if (keycode == KEY_Q)
+		hook_vars->mapData->angle = hook_vars->mapData->angle - 5;
+	if (keycode == 61 || keycode == 65451)
+		hook_vars->mapData->zoom_lvl++;
+	if (keycode == 45 || keycode == 65453)
+		if (hook_vars->mapData->zoom_lvl != 1)
+			hook_vars->mapData->zoom_lvl--;
+	redraw(hook_vars->mlxData, hook_vars->pData, hook_vars->mapData);
 	return (0);
 }
 void	init_hooks(t_mlxData *img, t_mapData *mapData, t_pointData *pData)
@@ -86,8 +88,8 @@ t_mlxData	*init_image(void)
 	img->mlx = mlx_init();
 	if (!img->mlx)
 		return (NULL);
-	img->win_height = 600;
-	img->win_width = 800;
+	img->win_height = 650;
+	img->win_width = 1050;
 	img->win = mlx_new_window(img->mlx, img->win_width, img->win_height,
 			"FDF Test");
 	if (!img->win)

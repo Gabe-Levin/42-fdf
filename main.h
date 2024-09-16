@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:10:03 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/15 00:03:14 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/16 03:02:33 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <mlx.h>
 # include <stdlib.h>
 
-# define BUFFER_SIZE2 700000
+#define M_PI 3.14159265358979323846
 
 typedef struct s_pointData
 {
@@ -74,8 +74,7 @@ typedef struct s_hook_vars
 
 t_pointData		*init_points(const char *filename, t_mapData *mapData);
 int				close_window(t_mlxData *img);
-void			read_input(const char *filename, t_pointData *pData,
-					t_mapData *mapData);
+void			read_input(const char *filename, t_pointData *pData);
 int				key_hooks(int keycode, t_hook_vars *hook_vars);
 t_mlxData		*init_image(void);
 void			put_pixel_to_image(t_mlxData *img, int x, int y, int color);
