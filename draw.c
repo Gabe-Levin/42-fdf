@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 01:15:40 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/16 00:58:05 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/16 16:01:56 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	draw_points(t_pointData *pData, t_mlxData *img, int numVertices)
 		if (!pData[i].color)
 		{
 			if (pData[i].z == 0)
-				pData[i].color = 0x00FFFFFF; // white
+				pData[i].color = 0x0000FF00; // white
 			else
 				pData[i].color = 0x00FF0000; // red
 		}

@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:08:45 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/16 02:28:52 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/20 12:59:06 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,10 @@ void	update_all_points(t_pointData *pData, t_mapData *mapData)
 	{
 		temp_x = pData[i].x * mapData->zoom_lvl;
 		temp_y = pData[i].y * mapData->zoom_lvl;
-		// printf("BEFORE: \n x: %i\n y: %i\n dx: %i\n dy: %i\n --------\n",
-		// 	pData[i].x, temp_y, pData[i].dx, pData[i].dy);
-		// printf("BEFORE: \n zoom_lvl: %i\n --------\n", mapData->zoom_lvl);
-		pData[i].dx = (temp_x * cos(rad) - temp_y
-				* cos(rad)) + mapData->x_offset;
-		pData[i].dy = (temp_x * sin(rad) + temp_y
-				* sin(rad) - pData[i].z) + mapData->y_offset;
-		// printf("BEFORE: \n zoom_lvl: %i\n --------\n", mapData->zoom_lvl);
-		// printf("i: %d\n x: %i\n y: %i\ndx: %i\n dy: %i\n--------\n", i,
-		// 	pData[i].x, pData[i].y, pData[i].dx, pData[i].dy);
+		pData[i].dx = (temp_x * cos(rad) - temp_y * cos(rad))
+			+ mapData->x_offset;
+		pData[i].dy = (temp_x * sin(rad) + temp_y * sin(rad) - pData[i].z)
+			+ mapData->y_offset;
 		i++;
 	}
 	return ;
@@ -77,7 +71,6 @@ void	set_point_xyz(char *s, t_parse_vars vars, t_pointData *pData)
 		c = ft_split(s, ',');
 		pData[vars.pid].z = ft_atoi(c[0]);
 		pData[vars.pid].color = hex_to_int(c[1]);
-		// printf("color: 0x%x\n", pData[vars.pid].color);
 	}
 	else
 	{
@@ -85,8 +78,6 @@ void	set_point_xyz(char *s, t_parse_vars vars, t_pointData *pData)
 	}
 	pData[vars.pid].x = vars.col;
 	pData[vars.pid].y = vars.row;
-	// printf("z: %d\n", pData[vars.pid].z);
-	// printf("color: %d\n", pData[vars.pid].color);
 }
 
 void	read_input(const char *filename, t_pointData *pData)
@@ -131,7 +122,8 @@ void	get_map_data(t_mapData **mapData, const char *filename)
 		str = ft_split(l, ' ');
 		while (str[i])
 		{
-			(*mapData)->vertices++;
+			if (str[i][0] != '\n')
+				(*mapData)->vertices++;
 			i++;
 		}
 		(*mapData)->rows++;

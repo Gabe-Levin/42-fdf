@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:10:03 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/16 03:02:33 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/20 12:43:05 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 # include <mlx.h>
 # include <stdlib.h>
 
-#define M_PI 3.14159265358979323846
+# define WINDOW_HEIGHT 650
+# define WINDOW_WIDTH 1050
+# define M_PI 3.14159265358979323846
 
 typedef struct s_pointData
 {

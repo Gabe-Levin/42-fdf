@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 22:34:51 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/16 03:36:35 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/20 12:51:34 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ t_mapData	*init_mapData(char *filename)
 	get_map_data(&mapData, filename);
 	return (mapData);
 }
+void	draw_text(t_mlxData *mlxData)
+{
+	mlx_string_put(mlxData->mlx, mlxData->win, 10, 20, 0xFFFFFF,
+		"Translate image: Arrow keys or wasd");
+	mlx_string_put(mlxData->mlx, mlxData->win, 10, 40, 0xFFFFFF,
+		"Rotate image: Q, E");
+	mlx_string_put(mlxData->mlx, mlxData->win, 10, 60, 0xFFFFFF, "Adjust zoom: +, -");
+}
 
 void	redraw(t_mlxData *mlxData, t_pointData *pData, t_mapData *mapData)
 {
@@ -39,6 +47,7 @@ void	redraw(t_mlxData *mlxData, t_pointData *pData, t_mapData *mapData)
 	draw_points(pData, mlxData, mapData->vertices);
 	draw_lines(pData, mlxData, mapData);
 	mlx_put_image_to_window(mlxData->mlx, mlxData->win, mlxData->img, 0, 0);
+	draw_text(mlxData);
 }
 
 void	center_points(t_pointData *pData, t_mapData *mapData)

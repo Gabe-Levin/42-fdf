@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 23:18:44 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/16 03:02:14 by glevin           ###   ########.fr       */
+/*   Updated: 2024/09/20 12:21:51 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,10 @@ t_mlxData	*init_image(void)
 	img->mlx = mlx_init();
 	if (!img->mlx)
 		return (NULL);
-	img->win_height = 650;
-	img->win_width = 1050;
+	img->win_height = WINDOW_HEIGHT;
+	img->win_width = WINDOW_WIDTH;
 	img->win = mlx_new_window(img->mlx, img->win_width, img->win_height,
-			"FDF Test");
+			"FDF ");
 	if (!img->win)
 	{
 		free(img->mlx);
