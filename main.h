@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:10:03 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/20 12:43:05 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/03 21:34:38 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,6 @@ void			get_map_data(t_mapData **mapData, const char *filename);
 void			init_hooks(t_mlxData *img, t_mapData *mapData,
 					t_pointData *pdata);
 void			redraw(t_mlxData *img, t_pointData *pData, t_mapData *mapData);
-void			update_all_points(t_pointData *pData, t_mapData *mapData);
+void			project_iso(t_pointData *pData, t_mapData *mapData);
 
 #endif

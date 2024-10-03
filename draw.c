@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 01:15:40 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/16 16:01:56 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/03 23:25:07 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	draw_points(t_pointData *pData, t_mlxData *img, int numVertices)
 	int	i;
 
 	i = 0;
+	printf("numVertices: %d", numVertices);
 	while (i < numVertices)
 	{
 		if (!pData[i].color)
@@ -41,6 +42,10 @@ void	draw_points(t_pointData *pData, t_mlxData *img, int numVertices)
 			else
 				pData[i].color = 0x00FF0000; // red
 		}
+		printf("-----\n");
+		printf("i: %d, ", i);
+		printf("dx: %d, dy: %d\n", pData[i].dx, pData[i].dy);
+		printf("x: %d, y: %d, z: %d\n", pData[i].x, pData[i].y, pData[i].z);
 		put_pixel_to_image(img, pData[i].dx, pData[i].dy, pData[i].color);
 		i++;
 	}

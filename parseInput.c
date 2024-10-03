@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:08:45 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/20 12:59:06 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/03 23:48:15 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,23 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void	update_all_points(t_pointData *pData, t_mapData *mapData)
+void	project_iso(t_pointData *pData, t_mapData *mapData)
 {
 	int		i;
-	int		temp_x;
-	int		temp_y;
+	int		x;
+	int		y;
+	int		z;
 	float	rad;
 
 	i = 0;
 	rad = mapData->angle * (M_PI / 180.0);
 	while (i < mapData->vertices)
 	{
-		temp_x = pData[i].x * mapData->zoom_lvl;
-		temp_y = pData[i].y * mapData->zoom_lvl;
-		pData[i].dx = (temp_x * cos(rad) - temp_y * cos(rad))
-			+ mapData->x_offset;
-		pData[i].dy = (temp_x * sin(rad) + temp_y * sin(rad) - pData[i].z)
-			+ mapData->y_offset;
+		x = pData[i].x * mapData->zoom_lvl;
+		y = pData[i].y * mapData->zoom_lvl;
+		z = pData[i].z;
+		pData[i].dx = (x - y) * cos(rad) + mapData->x_offset;
+		pData[i].dy = -z + (x + y) * sin(rad) + mapData->y_offset;
 		i++;
 	}
 	return ;
@@ -66,6 +66,9 @@ void	set_point_xyz(char *s, t_parse_vars vars, t_pointData *pData)
 {
 	char	**c;
 
+	// printf("----\n");
+	// printf("%s\n", s);
+	// printf("len = %ld\n", ft_strlen(s));
 	if (ft_strchr(s, ','))
 	{
 		c = ft_split(s, ',');
@@ -78,6 +81,19 @@ void	set_point_xyz(char *s, t_parse_vars vars, t_pointData *pData)
 	}
 	pData[vars.pid].x = vars.col;
 	pData[vars.pid].y = vars.row;
+	printf("pData[vars.pid].z: %d\n", pData[vars.pid].z);
+	printf("vars.col: %d\n", vars.col);
+	printf("vars.row: %d\n", vars.row);
+	printf("---------\n");
+}
+
+int	is_valid_input(char *s)
+{
+	if (s[0] == ' ' || s[0] == '\n')
+	{
+		return (0);
+	}
+	return (1);
 }
 
 void	read_input(const char *filename, t_pointData *pData)
@@ -86,6 +102,7 @@ void	read_input(const char *filename, t_pointData *pData)
 	char			*l;
 	char			**str;
 	t_parse_vars	vars;
+	int				i;
 
 	vars.pid = 0;
 	vars.row = 0;
@@ -95,11 +112,16 @@ void	read_input(const char *filename, t_pointData *pData)
 	{
 		str = ft_split(l, ' ');
 		vars.col = 0;
-		while (str[vars.col])
+		i = 0;
+		while (str[i])
 		{
-			set_point_xyz(str[vars.col], vars, pData);
-			vars.col++;
-			vars.pid++;
+			if (str[i][0] != '\n')
+			{
+				set_point_xyz(str[vars.col], vars, pData);
+				vars.col++;
+				vars.pid++;
+			}
+			i++;
 		}
 		l = get_next_line(fd);
 		vars.row++;
@@ -144,6 +166,6 @@ t_pointData	*init_points(const char *filename, t_mapData *mapData)
 	}
 	ft_memset(pData, 0, sizeof(t_pointData));
 	read_input(filename, pData);
-	update_all_points(pData, mapData);
+	project_iso(pData, mapData);
 	return (pData);
 }
