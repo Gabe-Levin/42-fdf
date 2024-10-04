@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 22:34:51 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/03 22:52:27 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/04 18:35:35 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ t_mapData	*init_mapData(char *filename)
 	mapData->x_offset = 525;
 	mapData->y_offset = 175;
 	mapData->angle = 30;
+	mapData->z_min = INT_MAX;
+	mapData->z_max = INT_MIN;
+	mapData->season = 1;
 	get_map_data(&mapData, filename);
 	return (mapData);
 }
@@ -46,8 +49,8 @@ void	redraw(t_mlxData *mlxData, t_pointData *pData, t_mapData *mapData)
 	mlxData->img = mlx_new_image(mlxData->mlx, mlxData->win_width,
 			mlxData->win_height);
 	project_iso(pData, mapData);
-	draw_points(pData, mlxData, mapData->vertices);
-	// draw_lines(pData, mlxData, mapData);
+	draw_points(pData, mlxData, mapData);
+	draw_lines(pData, mlxData, mapData);
 	mlx_put_image_to_window(mlxData->mlx, mlxData->win, mlxData->img, 0, 0);
 	draw_text(mlxData);
 }
@@ -56,11 +59,7 @@ void	center_points(t_pointData *pData, t_mapData *mapData)
 {
 	int	default_zoom;
 
-	// default_zoom = (int)(300 / (pData[mapData->vertices - 1].dy
-	// - pData[0].dy));
-	default_zoom = 20;
-	printf("default zoom: %d\n", default_zoom);
-	printf("mapData->vertices: %d\n", mapData->vertices);
+	default_zoom = (int)(400 / (pData[mapData->vertices - 1].dy - pData[0].dy));
 	if (default_zoom == 0)
 		mapData->zoom_lvl = 1;
 	else
@@ -81,8 +80,8 @@ int	main(int argc, char **argv)
 	pData = init_points(argv[1], mapData);
 	center_points(pData, mapData);
 	init_hooks(img, mapData, pData);
-	draw_points(pData, img, mapData->vertices);
-	// draw_lines(pData, img, mapData);
+	draw_points(pData, img, mapData);
+	draw_lines(pData, img, mapData);
 	mlx_put_image_to_window(img->mlx, img->win, img->img, 0, 0);
 	mlx_loop(img->mlx);
 	free(mapData);

@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 01:15:40 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/03 23:25:07 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/04 18:57:52 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,48 +24,51 @@ void	put_pixel_to_image(t_mlxData *img, int x, int y, int color)
 	img->addr[pixel_index + 1] = (color >> 8) & 0xFF;  // Green channel
 	img->addr[pixel_index + 2] = (color >> 16) & 0xFF; // Red channel
 	img->addr[pixel_index + 3] = 0xFF;
-	// Alpha channel (fully opaque)
 }
 
-void	draw_points(t_pointData *pData, t_mlxData *img, int numVertices)
+void	draw_points(t_pointData *pData, t_mlxData *img, t_mapData *mapData)
 {
 	int	i;
 
 	i = 0;
-	printf("numVertices: %d", numVertices);
-	while (i < numVertices)
+	while (i < mapData->vertices)
 	{
-		if (!pData[i].color)
-		{
-			if (pData[i].z == 0)
-				pData[i].color = 0x0000FF00; // white
-			else
-				pData[i].color = 0x00FF0000; // red
-		}
-		printf("-----\n");
-		printf("i: %d, ", i);
-		printf("dx: %d, dy: %d\n", pData[i].dx, pData[i].dy);
-		printf("x: %d, y: %d, z: %d\n", pData[i].x, pData[i].y, pData[i].z);
+		if (!pData[i].color_given)
+			set_point_color(&pData[i], mapData);
 		put_pixel_to_image(img, pData[i].dx, pData[i].dy, pData[i].color);
 		i++;
 	}
 }
 
-void	bresenham(t_mlxData *img, t_pointData p1, t_pointData p2)
+float	get_ratio(int x, int y, t_pointData *p1, t_pointData *p2)
 {
-	int	x;
-	int	y;
-	int	dx;
-	int	dy;
-	int	sx;
-	int	sy;
-	int	err;
-	int	e2;
+	float	dist_total;
+	float	dist_current;
 
-	x = p1.dx;
-	y = p1.dy;
-	dx = p2.dx - x;
-	dy = p2.dy - y;
+	dist_total = sqrt((p2->dx - p1->dx) * (p2->dx - p1->dx) + (p2->dy - p1->dy)
+			* (p2->dy - p1->dy));
+	dist_current = sqrt((x - p1->dx) * (x - p1->dx) + (y - p1->dy) * (y
+				- p1->dy));
+	return (dist_current / dist_total);
+}
+
+void	bresenham(t_mlxData *img, t_pointData *p1, t_pointData *p2)
+{
+	int		x;
+	int		y;
+	int		dx;
+	int		dy;
+	int		sx;
+	int		sy;
+	int		err;
+	int		e2;
+	int		color;
+	float	ratio;
+
+	x = p1->dx;
+	y = p1->dy;
+	dx = p2->dx - x;
+	dy = p2->dy - y;
 	// Step Directions
 	if (dx > 0)
 		sx = 1;
@@ -84,9 +87,12 @@ void	bresenham(t_mlxData *img, t_pointData p1, t_pointData p2)
 		err = dx / 2;
 	else
 		err = -dy / 2;
-	while (x != p2.dx || y != p2.dy)
+	// Calc ratio
+	while (x != p2->dx || y != p2->dy)
 	{
-		put_pixel_to_image(img, x, y, p1.color);
+		ratio = get_ratio(x, y, p1, p2);
+		color = get_color(p1, p2, ratio);
+		put_pixel_to_image(img, x, y, color);
 		e2 = 2 * err;
 		if (e2 > -dx)
 		{
@@ -109,10 +115,10 @@ void	draw_lines(t_pointData *pData, t_mlxData *img, t_mapData *mapData)
 	while (i < mapData->vertices)
 	{
 		if ((i + 1) % mapData->columns || i == 0)
-			bresenham(img, pData[i], pData[i + 1]);
+			bresenham(img, &pData[i], &pData[i + 1]);
 		if (i < (mapData->vertices - mapData->columns))
 		{
-			bresenham(img, pData[i], pData[i + mapData->columns]);
+			bresenham(img, &pData[i], &pData[i + mapData->columns]);
 		}
 		i++;
 	}

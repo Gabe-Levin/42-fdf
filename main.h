@@ -6,15 +6,17 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:10:03 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/03 21:34:38 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/04 18:03:35 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAIN_H
 # define MAIN_H
 
+# include "colors.h"
 # include "masterLib/masterLib.h"
 # include <fcntl.h>
+# include <limits.h>
 # include <math.h>
 # include <mlx.h>
 # include <stdlib.h>
@@ -33,6 +35,8 @@ typedef struct s_pointData
 	int			color;
 	int			row;
 	int			column;
+	int			color_given;
+
 }				t_pointData;
 
 typedef struct s_mapData
@@ -43,7 +47,10 @@ typedef struct s_mapData
 	int			zoom_lvl;
 	int			x_offset;
 	int			y_offset;
+	int			z_max;
+	int			z_min;
 	double		angle;
+	int			season;
 
 }				t_mapData;
 
@@ -81,8 +88,8 @@ int				key_hooks(int keycode, t_hook_vars *hook_vars);
 t_mlxData		*init_image(void);
 void			put_pixel_to_image(t_mlxData *img, int x, int y, int color);
 void			draw_points(t_pointData *pData, t_mlxData *img,
-					int numVertices);
-void			bresenham(t_mlxData *img, t_pointData p1, t_pointData p2);
+					t_mapData *mapData);
+void			bresenham(t_mlxData *img, t_pointData *p1, t_pointData *p2);
 void			draw_lines(t_pointData *pData, t_mlxData *img,
 					t_mapData *mapData);
 void			get_map_data(t_mapData **mapData, const char *filename);
@@ -90,5 +97,8 @@ void			init_hooks(t_mlxData *img, t_mapData *mapData,
 					t_pointData *pdata);
 void			redraw(t_mlxData *img, t_pointData *pData, t_mapData *mapData);
 void			project_iso(t_pointData *pData, t_mapData *mapData);
+void			free_split_str(char **str);
+int				get_color(t_pointData *p1, t_pointData *p2, double ratio);
+void			set_point_color(t_pointData *p, t_mapData *m);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:08:45 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/03 23:48:15 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/04 18:09:44 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,13 @@ void	set_point_xyz(char *s, t_parse_vars vars, t_pointData *pData)
 {
 	char	**c;
 
-	// printf("----\n");
-	// printf("%s\n", s);
-	// printf("len = %ld\n", ft_strlen(s));
 	if (ft_strchr(s, ','))
 	{
 		c = ft_split(s, ',');
 		pData[vars.pid].z = ft_atoi(c[0]);
 		pData[vars.pid].color = hex_to_int(c[1]);
+		pData[vars.pid].color_given = 1;
+		free_split_str(c);
 	}
 	else
 	{
@@ -81,10 +80,6 @@ void	set_point_xyz(char *s, t_parse_vars vars, t_pointData *pData)
 	}
 	pData[vars.pid].x = vars.col;
 	pData[vars.pid].y = vars.row;
-	printf("pData[vars.pid].z: %d\n", pData[vars.pid].z);
-	printf("vars.col: %d\n", vars.col);
-	printf("vars.row: %d\n", vars.row);
-	printf("---------\n");
 }
 
 int	is_valid_input(char *s)
@@ -123,6 +118,8 @@ void	read_input(const char *filename, t_pointData *pData)
 			}
 			i++;
 		}
+		free_split_str(str);
+		free(l);
 		l = get_next_line(fd);
 		vars.row++;
 	}
@@ -145,12 +142,21 @@ void	get_map_data(t_mapData **mapData, const char *filename)
 		while (str[i])
 		{
 			if (str[i][0] != '\n')
+			{
+				if (ft_atoi(str[i]) < (*mapData)->z_min)
+					(*mapData)->z_min = ft_atoi(str[i]);
+				if (ft_atoi(str[i]) > (*mapData)->z_max)
+					(*mapData)->z_max = ft_atoi(str[i]);
 				(*mapData)->vertices++;
+			}
 			i++;
 		}
 		(*mapData)->rows++;
+		free_split_str(str);
+		free(l);
 		l = get_next_line(fd);
 	}
+	free(l);
 	(*mapData)->columns = (*mapData)->vertices / (*mapData)->rows;
 	close(fd);
 }
@@ -164,7 +170,7 @@ t_pointData	*init_points(const char *filename, t_mapData *mapData)
 	{
 		return (NULL);
 	}
-	ft_memset(pData, 0, sizeof(t_pointData));
+	ft_memset(pData, 0, sizeof(t_pointData) * mapData->vertices);
 	read_input(filename, pData);
 	project_iso(pData, mapData);
 	return (pData);
