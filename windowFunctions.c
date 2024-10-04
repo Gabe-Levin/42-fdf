@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 23:18:44 by glevin            #+#    #+#             */
-/*   Updated: 2024/09/20 12:21:51 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/04 19:34:34 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #define KEY_RIGHT 65363
 #define KEY_E 101
 #define KEY_Q 113
+#define KEY_Z 122
+#define KEY_X 120
 
 int	close_window(t_mlxData *img)
 {
@@ -49,6 +51,10 @@ int	key_hooks(int keycode, t_hook_vars *hook_vars)
 		hook_vars->mapData->angle = hook_vars->mapData->angle + 5;
 	if (keycode == KEY_Q)
 		hook_vars->mapData->angle = hook_vars->mapData->angle - 5;
+	if (keycode == KEY_Z)
+		hook_vars->mapData->extrusion_factor = hook_vars->mapData->extrusion_factor + 5;
+	if (keycode == KEY_X)
+		hook_vars->mapData->extrusion_factor = hook_vars->mapData->extrusion_factor - 5;
 	if (keycode == 61 || keycode == 65451)
 		hook_vars->mapData->zoom_lvl++;
 	if (keycode == 45 || keycode == 65453)

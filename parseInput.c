@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:08:45 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/04 18:09:44 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/04 19:31:54 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	project_iso(t_pointData *pData, t_mapData *mapData)
 	{
 		x = pData[i].x * mapData->zoom_lvl;
 		y = pData[i].y * mapData->zoom_lvl;
-		z = pData[i].z;
+		z = pData[i].z * mapData->extrusion_factor;
 		pData[i].dx = (x - y) * cos(rad) + mapData->x_offset;
 		pData[i].dy = -z + (x + y) * sin(rad) + mapData->y_offset;
 		i++;

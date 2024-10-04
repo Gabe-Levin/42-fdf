@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:10:03 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/04 18:03:35 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/04 19:30:37 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_mapData
 	int			z_min;
 	double		angle;
 	int			season;
+	int			extrusion_factor;
 
 }				t_mapData;
 
