@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 01:08:27 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/04 19:07:01 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/06 20:20:15 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,7 @@ void	set_point_color(t_pointData *p, t_mapData *m)
 		level = 4;
 	else
 		level = 5;
-	// printf("----\n");
-	// printf("i: %d\n", i);
-	// printf("level: %d\n", level);
-	// printf("p->color: %d\n", p->color);
 	p->color = get_point_color(m->season, level);
-	// printf("level: %d\n", level);
-	// printf("p->z: %d\n", p->z);
-	// printf("m->z_max: %d\n", m->z_max);
 }
 
 int	get_color(t_pointData *p1, t_pointData *p2, double ratio)
@@ -85,12 +78,5 @@ int	get_color(t_pointData *p1, t_pointData *p2, double ratio)
 		* ratio;
 	blue = ((p1->color & 0xFF) * (1 - ratio) + (p2->color & 0xFF) * ratio);
 	color = (red << 16) | (green << 8) | blue;
-	// if (p1->color != 0)
-	// {
-	// 	printf("------\n");
-	// 	printf("p1->color: %d\n", p1->color);
-	// 	printf("p1->x: %d\n", p1->x);
-	// 	printf("p1->y: %d\n", p1->y);
-	// }
 	return (color);
 }
