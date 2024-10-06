@@ -14,7 +14,8 @@ MASTERLIB_DIR = masterLib
 MASTERLIB = $(MASTERLIB_DIR)/masterLib.a
 
 # Source files and object files
-SRC = main.c parseInput.c windowFunctions.c draw.c utils.c color.c
+SRC = main.c parseInput.c windowFunctions.c draw.c utils.c color.c rotations.c errors.c \
+	 bresenham.c project.c init_map.c init_points.c
 OBJ = $(SRC:.c=.o)
 
 # Build the project

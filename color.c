@@ -6,11 +6,11 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 01:08:27 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/06 20:20:15 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/06 20:34:07 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "inc/main.h"
 
 int	get_point_color(int s, int level)
 {

@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:10:03 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/04 19:30:37 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/06 20:34:25 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MAIN_H
 
 # include "colors.h"
-# include "masterLib/masterLib.h"
+# include "../masterLib/masterLib.h"
 # include <fcntl.h>
 # include <limits.h>
 # include <math.h>
@@ -30,6 +30,9 @@ typedef struct s_pointData
 	int			x;
 	int			y;
 	int			z;
+	int			rx;
+	int			ry;
+	int			rz;
 	int			dx;
 	int			dy;
 	int			color;
@@ -52,6 +55,12 @@ typedef struct s_mapData
 	double		angle;
 	int			season;
 	int			extrusion_factor;
+	double		x_angle;
+	double		y_angle;
+	double		z_angle;
+	int			x_center;
+	int			y_center;
+	int			z_center;
 
 }				t_mapData;
 
@@ -101,5 +110,14 @@ void			project_iso(t_pointData *pData, t_mapData *mapData);
 void			free_split_str(char **str);
 int				get_color(t_pointData *p1, t_pointData *p2, double ratio);
 void			set_point_color(t_pointData *p, t_mapData *m);
+void			rotate_points(t_pointData *p, t_mapData *m);
+void			set_offsets(t_pointData *pData, t_mapData *mapData);
+void			calc_center(t_pointData *pData, t_mapData *mapData);
+void			translate_back(t_pointData *p, t_mapData *m);
+void			translate_to_origin(t_pointData *p, t_mapData *m);
+int				hex_to_int(const char *hex_str);
+int				is_valid_input(char *s);
+t_mapData		*init_mapData(char *filename);
+void			center_points(t_pointData *pData, t_mapData *mapData);
 
 #endif

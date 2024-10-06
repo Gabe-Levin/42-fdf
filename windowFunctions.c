@@ -6,11 +6,11 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 23:18:44 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/04 19:34:34 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/06 20:34:07 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "inc/main.h"
 
 #define KEY_ESC 65307
 #define KEY_UP 65362
@@ -21,6 +21,12 @@
 #define KEY_Q 113
 #define KEY_Z 122
 #define KEY_X 120
+#define KEY_O 111
+#define KEY_P 112
+#define KEY_K 107
+#define KEY_L 108
+#define KEY_N 110
+#define KEY_M 109
 
 int	close_window(t_mlxData *img)
 {
@@ -40,21 +46,33 @@ int	key_hooks(int keycode, t_hook_vars *hook_vars)
 		exit(0);
 	}
 	if (keycode == KEY_UP || keycode == 119)
-		hook_vars->mapData->y_offset = hook_vars->mapData->y_offset - 5;
+		hook_vars->mapData->y_offset -= 5;
 	if (keycode == KEY_DOWN || keycode == 115)
-		hook_vars->mapData->y_offset = hook_vars->mapData->y_offset + 5;
+		hook_vars->mapData->y_offset += 5;
 	if (keycode == KEY_LEFT || keycode == 97)
-		hook_vars->mapData->x_offset = hook_vars->mapData->x_offset - 5;
+		hook_vars->mapData->x_offset -= 5;
 	if (keycode == KEY_RIGHT || keycode == 100)
-		hook_vars->mapData->x_offset = hook_vars->mapData->x_offset + 5;
+		hook_vars->mapData->x_offset += 5;
 	if (keycode == KEY_E)
-		hook_vars->mapData->angle = hook_vars->mapData->angle + 5;
+		hook_vars->mapData->angle += 5;
 	if (keycode == KEY_Q)
-		hook_vars->mapData->angle = hook_vars->mapData->angle - 5;
+		hook_vars->mapData->angle -= 5;
 	if (keycode == KEY_Z)
-		hook_vars->mapData->extrusion_factor = hook_vars->mapData->extrusion_factor + 5;
+		hook_vars->mapData->extrusion_factor += 5;
 	if (keycode == KEY_X)
-		hook_vars->mapData->extrusion_factor = hook_vars->mapData->extrusion_factor - 5;
+		hook_vars->mapData->extrusion_factor -= 5;
+	if (keycode == KEY_O)
+		hook_vars->mapData->x_angle += 0.05;
+	if (keycode == KEY_P)
+		hook_vars->mapData->x_angle -= 0.05;
+	if (keycode == KEY_K)
+		hook_vars->mapData->y_angle += 0.05;
+	if (keycode == KEY_L)
+		hook_vars->mapData->y_angle -= 0.05;
+	if (keycode == KEY_N)
+		hook_vars->mapData->z_angle += 0.05;
+	if (keycode == KEY_M)
+		hook_vars->mapData->z_angle -= 0.05;
 	if (keycode == 61 || keycode == 65451)
 		hook_vars->mapData->zoom_lvl++;
 	if (keycode == 45 || keycode == 65453)

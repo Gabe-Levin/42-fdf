@@ -6,11 +6,11 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 01:15:40 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/04 18:57:52 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/06 21:03:04 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "inc/main.h"
 
 void	put_pixel_to_image(t_mlxData *img, int x, int y, int color)
 {
@@ -40,73 +40,6 @@ void	draw_points(t_pointData *pData, t_mlxData *img, t_mapData *mapData)
 	}
 }
 
-float	get_ratio(int x, int y, t_pointData *p1, t_pointData *p2)
-{
-	float	dist_total;
-	float	dist_current;
-
-	dist_total = sqrt((p2->dx - p1->dx) * (p2->dx - p1->dx) + (p2->dy - p1->dy)
-			* (p2->dy - p1->dy));
-	dist_current = sqrt((x - p1->dx) * (x - p1->dx) + (y - p1->dy) * (y
-				- p1->dy));
-	return (dist_current / dist_total);
-}
-
-void	bresenham(t_mlxData *img, t_pointData *p1, t_pointData *p2)
-{
-	int		x;
-	int		y;
-	int		dx;
-	int		dy;
-	int		sx;
-	int		sy;
-	int		err;
-	int		e2;
-	int		color;
-	float	ratio;
-
-	x = p1->dx;
-	y = p1->dy;
-	dx = p2->dx - x;
-	dy = p2->dy - y;
-	// Step Directions
-	if (dx > 0)
-		sx = 1;
-	else
-		sx = -1;
-	if (dy > 0)
-		sy = 1;
-	else
-		sy = -1;
-	if (dx < 0)
-		dx = -dx;
-	if (dy < 0)
-		dy = -dy;
-	// Error term initialization
-	if (dx > dy)
-		err = dx / 2;
-	else
-		err = -dy / 2;
-	// Calc ratio
-	while (x != p2->dx || y != p2->dy)
-	{
-		ratio = get_ratio(x, y, p1, p2);
-		color = get_color(p1, p2, ratio);
-		put_pixel_to_image(img, x, y, color);
-		e2 = 2 * err;
-		if (e2 > -dx)
-		{
-			err -= dy;
-			x += sx;
-		}
-		if (e2 < dy)
-		{
-			err += dx;
-			y += sy;
-		}
-	}
-}
-
 void	draw_lines(t_pointData *pData, t_mlxData *img, t_mapData *mapData)
 {
 	int	i;
@@ -122,4 +55,35 @@ void	draw_lines(t_pointData *pData, t_mlxData *img, t_mapData *mapData)
 		}
 		i++;
 	}
+}
+
+void	draw_text(t_mlxData *mlxData)
+{
+	mlx_string_put(mlxData->mlx, mlxData->win, 10, 20, 0xFFFFFF,
+		"Translate image: Arrow keys or wasd");
+	mlx_string_put(mlxData->mlx, mlxData->win, 10, 40, 0xFFFFFF,
+		"Rotate image: Q, E");
+	mlx_string_put(mlxData->mlx, mlxData->win, 10, 60, 0xFFFFFF,
+		"Adjust zoom:+,-");
+}
+
+void	redraw(t_mlxData *mlxData, t_pointData *pData, t_mapData *mapData)
+{
+	mlx_clear_window(mlxData->mlx, mlxData->win);
+	if (mlxData->img)
+		mlx_destroy_image(mlxData->mlx, mlxData->img);
+	mlxData->img = mlx_new_image(mlxData->mlx, mlxData->win_width,
+			mlxData->win_height);
+	rotate_points(pData, mapData);
+	printf("pData[0].rx: %d\npData[0].ry: %d\npData[0].rz: %d\n", pData->rx,
+		pData->ry, pData->rz);
+	printf("pData[0].dx: %d\npData[0].dy: %d\n", pData->dx,
+		pData->dy);
+	project_iso(pData, mapData);
+	draw_points(pData, mlxData, mapData);
+	draw_lines(pData, mlxData, mapData);
+	printf("mapData->x_center: %d\n", mapData->x_center);
+	printf("mapData->y_center: %d\n", mapData->y_center);
+	mlx_put_image_to_window(mlxData->mlx, mlxData->win, mlxData->img, 0, 0);
+	draw_text(mlxData);
 }
