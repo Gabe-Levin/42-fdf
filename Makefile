@@ -7,6 +7,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 MLXFLAGS = -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 
 # Directories
+SRC_DIR = src
 MINILIBX_DIR = minilibx-linux
 MASTERLIB_DIR = masterLib
 
@@ -14,8 +15,10 @@ MASTERLIB_DIR = masterLib
 MASTERLIB = $(MASTERLIB_DIR)/masterLib.a
 
 # Source files and object files
-SRC = main.c parseInput.c windowFunctions.c draw.c utils.c color.c rotations.c errors.c \
-	 bresenham.c project.c init_map.c init_points.c
+SRC = $(SRC_DIR)/main.c $(SRC_DIR)/parseInput.c $(SRC_DIR)/hooks/hooks.c $(SRC_DIR)/draw.c \
+      $(SRC_DIR)/utils.c $(SRC_DIR)/color.c $(SRC_DIR)/rotations.c $(SRC_DIR)/errors.c \
+      $(SRC_DIR)/bresenham.c $(SRC_DIR)/project.c $(SRC_DIR)/init_map.c $(SRC_DIR)/init_points.c \
+	  $(SRC_DIR)/hooks/init_hooks.c 
 OBJ = $(SRC:.c=.o)
 
 # Build the project

@@ -6,7 +6,7 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 17:08:18 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/04 17:10:10 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/18 18:18:25 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,18 +93,19 @@
 # define DARK_GRAY 0x696969
 # define GAINSBORO 0xDCDCDC
 # define WHITE_SMOKE 0xF5F5F5
-#endif
 
 /*
 ** more awesome colors
 */
 
-#define PINK 0xcc00cc
-#define BLACK 0x000000
-#define MARINE_BLUE 0x000099
-#define CRIMSON_RED 0x990033
-#define NICE_BLUE 0x6666ff
-#define DARK_TEAL 0x33cccc
-#define GREY 0xd3d3d3
-#define BROWN 0x996633
-#define TRANSPARENT 0x77000000
+# define PINK 0xcc00cc
+# define BLACK 0x000000
+# define MARINE_BLUE 0x000099
+# define CRIMSON_RED 0x990033
+# define NICE_BLUE 0x6666ff
+# define DARK_TEAL 0x33cccc
+# define GREY 0xd3d3d3
+# define BROWN 0x996633
+# define TRANSPARENT 0x77000000
+
+#endif

@@ -6,13 +6,13 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 20:30:50 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/06 20:34:07 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/18 18:35:30 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/main.h"
+#include "../inc/main.h"
 
-void	project_iso(t_pointData *pData, t_mapData *mapData)
+void	project_iso(t_pointData *p, t_mapData *m)
 {
 	int		i;
 	int		x;
@@ -21,15 +21,37 @@ void	project_iso(t_pointData *pData, t_mapData *mapData)
 	float	rad;
 
 	i = 0;
-	rad = mapData->angle * (M_PI / 180.0);
-	while (i < mapData->vertices)
+	rad = m->angle * (M_PI / 180.0);
+	while (i < m->vertices)
 	{
-		x = pData[i].rx * mapData->zoom_lvl;
-		y = pData[i].ry * mapData->zoom_lvl;
-		z = pData[i].rz * mapData->extrusion_factor;
-		pData[i].dx = (x - y) * cos(rad) + mapData->x_offset;
-		pData[i].dy = -z + (x + y) * sin(rad) + mapData->y_offset;
+		x = p[i].rx;
+		y = p[i].ry;
+		z = p[i].rz;
+		p[i].dx = ((x - y) * cos(rad)) + m->x_offset;
+		p[i].dy = (-z + (x + y) * sin(rad)) + m->y_offset;
 		i++;
 	}
 	return ;
+}
+
+void	project_parallel(t_pointData *p, t_mapData *m)
+{
+	int	i;
+
+	i = 0;
+	while (i < m->vertices)
+	{
+		p[i].dx = p[i].rx + m->x_offset;
+		p[i].dy = p[i].ry + m->y_offset;
+		i++;
+	}
+	return ;
+}
+
+void	project(t_pointData *p, t_mapData *m)
+{
+	if (m->projection == 0)
+		project_iso(p, m);
+	if (m->projection == 1)
+		project_parallel(p, m);
 }

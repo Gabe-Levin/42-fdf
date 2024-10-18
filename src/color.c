@@ -6,11 +6,11 @@
 /*   By: glevin <glevin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 01:08:27 by glevin            #+#    #+#             */
-/*   Updated: 2024/10/06 20:34:07 by glevin           ###   ########.fr       */
+/*   Updated: 2024/10/18 18:34:12 by glevin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/main.h"
+#include "../inc/main.h"
 
 int	get_point_color(int s, int level)
 {
@@ -18,7 +18,7 @@ int	get_point_color(int s, int level)
 	int	season[4][6];
 
 	l = 0;
-	while (l < 4)
+	while (l < 3)
 	{
 		season[l][0] = MIDNIGHT_BLUE;
 		season[l][5] = WHITE;
@@ -36,10 +36,6 @@ int	get_point_color(int s, int level)
 	season[2][2] = GREEN;
 	season[2][3] = RED;
 	season[2][4] = GOLD;
-	season[3][1] = NICE_BLUE;
-	season[3][2] = WHITE;
-	season[3][3] = SKY_BLUE;
-	season[3][4] = NICE_BLUE;
 	return (season[s][level]);
 }
 
